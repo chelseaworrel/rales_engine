@@ -41,6 +41,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   private
+  
   def find_item
     Item.find_by(id: params[:item_id])
   end

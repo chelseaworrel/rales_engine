@@ -15,11 +15,10 @@ class Merchant < ActiveRecord::Base
 
   def favorite_customer
     customers.max_by { |c| c.invoices.successful.where(merchant_id: id).count }
-    # invoices.successful.select('invoices.customer_id').group(:customer_id).count
   end
 
   def customers_with_pending_invoices
-    pending_invoices = invoices - invoices.successful 
+    pending_invoices = invoices - invoices.successful
     pending_invoices.map { |invoice| invoice.customer }
   end
 end
