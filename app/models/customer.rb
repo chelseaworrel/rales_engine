@@ -4,6 +4,6 @@ class Customer < ActiveRecord::Base
   has_many :merchants, through: :invoices
 
   def favorite_merchant
-    merchants.max_by { |m| m.transactions.where(result: "success").count }
+    merchants.max_by { |c| c.invoices.successful.where(customer_id: id).count }
   end
 end
