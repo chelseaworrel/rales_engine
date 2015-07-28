@@ -22,7 +22,13 @@ Rails.application.routes.draw do
       get '/invoices/find', to: 'invoices#find'
       get '/invoices/find_all', to: 'invoices#find_all'
       get '/invoices/random', to: 'invoices#random'
-      resources :invoices, except: [:new, :edit]
+      resources :invoices, except: [:new, :edit] do
+        get '/transactions', to: 'invoices#transactions', only: [:index]
+        get '/invoice_items', to: 'invoices#invoice_items', only: [:index]
+        get '/items', to: 'invoices#items', only: [:index]
+        get '/customer', to: 'invoices#customer', only: [:show]
+        get '/merchant', to: 'invoices#merchant', only: [:show]
+      end
 
       get '/items/find', to: 'items#find'
       get '/items/find_all', to: 'items#find_all'

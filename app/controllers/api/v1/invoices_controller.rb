@@ -6,15 +6,23 @@ class Api::V1::InvoicesController < ApplicationController
   end
 
   def show
-    respond_with Invoice.find(params[:id])
+    respond_with Invoice.find_by(id: params[:id])
   end
 
   def create
-    respond_with Invoice.create(invoice_params)
+    respond_with Invoice.create(merchant_params)
   end
 
   def update
-    respond_with Invoice.update(params[:id], invoice_params)
+    respond_with Invoice.create(params[:id], invoice_params)
+  end
+
+  def destroy
+    respond_with Invoice.destroy(params[:id])
+  end
+
+  def random
+    respond_with Invoice.limit(1).order("RANDOM()")
   end
 
   def find
@@ -25,11 +33,31 @@ class Api::V1::InvoicesController < ApplicationController
     render json: Invoice.where(find_params)
   end
 
-  def random
-    render json: Invoice.limit(1).order("RANDOM()")
+  def transactions
+    render json: find_invoice.transactions
+  end
+
+  def invoice_items
+    render json: find_invoice.invoice_items
+  end
+
+  def items
+    render json: find_invoice.items
+  end
+
+  def customer
+    render json: find_invoice.customer
+  end
+
+  def merchant
+    render json: find_invoice.merchant
   end
 
   private
+
+  def find_invoice
+    Invoice.find_by(id: params[:invoice_id])
+  end
 
   def invoice_params
     params.require(:invoice).permit(:customer_id, :merchant_id, :status, :created_at, :updated_at)
