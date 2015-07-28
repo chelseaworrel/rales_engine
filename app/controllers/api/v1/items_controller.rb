@@ -6,7 +6,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def show
-    respond_with Item.find(params[:id])
+    respond_with Item.find_by(id: params[:id])
   end
 
   def create
@@ -14,7 +14,15 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def update
-    respond_with Item.update(params[:id], item_params)
+    respond_with Item.create(params[:id], item_params)
+  end
+
+  def destroy
+    respond_with Item.destroy(params[:id])
+  end
+
+  def random
+    respond_with Item.limit(1).order("RANDOM()")
   end
 
   def find
@@ -25,11 +33,18 @@ class Api::V1::ItemsController < ApplicationController
     render json: Item.where(find_params)
   end
 
-  def random
-    render json: Item.limit(1).order("RANDOM()")
+  def invoice_items
+    render json: find_item.invoice_items
+  end
+
+  def merchant
+    render json: find_item.merchant
   end
 
   private
+  def find_item
+    Item.find_by(id: params[:item_id])
+  end
 
   def item_params
     params.require(:item).permit(:name, :description, :unit_price, :merchant_id, :created_at, :updated_at)

@@ -14,10 +14,11 @@ Rails.application.routes.draw do
       get '/merchants/find', to: 'merchants#find'
       get '/merchants/find_all', to: 'merchants#find_all'
       get '/merchants/random', to: 'merchants#random'
-      resources :merchants, except: [:edit, :new] do
-       get '/items',    to: "merchants/items#index"
-       get '/invoices', to: "merchants/invoices#index"
-     end
+      resources :merchants, except: [:new, :edit] do
+        get '/items', to: 'merchants#items', only: [:index]
+        get '/invoices', to: 'merchants#invoices', only: [:index]
+        get '/revenue', to: 'merchants#revenue'
+      end
 
       get '/invoices/find', to: 'invoices#find'
       get '/invoices/find_all', to: 'invoices#find_all'
@@ -33,7 +34,10 @@ Rails.application.routes.draw do
       get '/items/find', to: 'items#find'
       get '/items/find_all', to: 'items#find_all'
       get '/items/random', to: 'items#random'
-      resources :items, except: [:new, :edit]
+      resources :items, except: [:new, :edit] do
+        get '/invoice_items', to: 'items#invoice_items', only: [:index]
+        get '/merchant', to: 'items#merchant', only: [:show]
+      end
 
       get '/invoice_items/find', to: 'invoice_items#find'
       get '/invoice_items/find_all', to: 'invoice_items#find_all'
