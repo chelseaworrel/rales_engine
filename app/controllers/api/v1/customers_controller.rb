@@ -42,7 +42,7 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   def favorite_merchant
-    render json: find_customer.fave_merch
+    render json: find_customer.favorite_merchant
   end
 
   def merchants

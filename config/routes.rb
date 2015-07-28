@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         get '/items', to: 'merchants#items', only: [:index]
         get '/invoices', to: 'merchants#invoices', only: [:index]
         get '/revenue', to: 'merchants#revenue'
+        get 'favorite_customer', to: 'merchants#favorite_customer'
       end
 
       get '/invoices/find', to: 'invoices#find'

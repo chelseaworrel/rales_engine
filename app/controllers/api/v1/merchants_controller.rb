@@ -45,6 +45,10 @@ class Api::V1::MerchantsController < ApplicationController
     render json: find_merchant.revenue
   end
 
+  def favorite_customer
+    render json: find_merchant.favorite_customer
+  end
+
   private
   def find_merchant
     Merchant.find_by(id: params[:merchant_id])
