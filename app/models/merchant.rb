@@ -32,4 +32,12 @@ class Merchant < ActiveRecord::Base
     invoices.successful.joins(:invoice_items).sum('quantity * unit_price')/100
   end
 
+  def self.most_items(params)
+    all.max_by(params[:quantity].to_i) { |m| m.total_items }
+  end
+
+  def total_items
+    invoices.successful.joins(:invoice_items).sum(:quantity)
+  end
+
 end
