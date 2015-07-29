@@ -37,7 +37,7 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   private
-
+  
   def find_customer
     Customer.find_by(id: params[:customer_id])
   end

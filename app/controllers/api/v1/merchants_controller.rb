@@ -29,7 +29,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def revenue
-    render json: find_merchant.revenue
+    render json: find_merchant.revenue(params)
   end
 
   def favorite_customer

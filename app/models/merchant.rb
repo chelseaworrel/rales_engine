@@ -9,7 +9,7 @@ class Merchant < ActiveRecord::Base
 
   end
 
-  def revenue
+  def revenue(params)
     if params[:date]
       invoices.successful.where(invoices: {created_at: params[:date]}).joins(:invoice_items).sum('quantity * unit_price') / 100.00
     else
