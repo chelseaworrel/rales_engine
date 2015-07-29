@@ -13,7 +13,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def find
-    render json: Merchant.find_by(find_params)
+    respond_with Merchant.find_by(find_params)
   end
 
   def find_all
@@ -40,6 +40,10 @@ class Api::V1::MerchantsController < ApplicationController
     render json: find_merchant.customers_with_pending_invoices
   end
 
+  def most_revenue
+    respond_with Merchant.most_revenue(params)
+  end
+
   private
   def find_merchant
     Merchant.find_by(id: params[:merchant_id])
@@ -52,4 +56,5 @@ class Api::V1::MerchantsController < ApplicationController
   def find_params
     params.permit(:id, :name, :created_at, :updated_at)
   end
+
 end

@@ -5,9 +5,6 @@ class Merchant < ActiveRecord::Base
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
 
-  def self.most_revenue(x)
-
-  end
 
   def revenue(params)
     if params[:date]
@@ -25,4 +22,14 @@ class Merchant < ActiveRecord::Base
     pending_invoices = invoices - invoices.successful
     pending_invoices.map { |invoice| invoice.customer }
   end
+
+  def self.most_revenue(params)
+     all.max_by(params[:quantity].to_i) { |m| m.calculate_revenue }
+    # all.sort_by { |m| m.revenue_total }.last(params[:quantity].to_i).reverse
+  end
+
+  def calculate_revenue
+    invoices.successful.joins(:invoice_items).sum('quantity * unit_price')/100
+  end
+
 end
