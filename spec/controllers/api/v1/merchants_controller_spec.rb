@@ -2,32 +2,30 @@ require 'rails_helper'
 
 describe Api::V1::MerchantsController do
   context '#index' do
-    it 'returns all the customers' do
-      Customer.create(first_name: 'Chelsea', last_name: 'May')
+    it 'returns all the merchants' do
+      Merchant.create(name: 'Target')
 
       get :index, format: :json
 
       expect(response).to have_http_status(:ok)
-      customer = JSON.parse(response.body)
+      merchant = JSON.parse(response.body)
 
-      customer = customer.last
+      merchant = merchant.last
 
-      expect(customer['first_name']).to eq('Chelsea')
-      expect(customer['last_name']).to eq('May')
+      expect(merchant['name']).to eq('Target')
     end
   end
 
   context '#show' do
-    it 'returns a customer' do
-      customer = Customer.create(first_name: 'Chelsea', last_name: 'May')
+    it 'returns a merchant' do
+      merchant = Merchant.create(name: 'Patagonia')
 
-      get :show, id: customer.id, format: :json
+      get :show, id: merchant.id, format: :json
 
       expect(response).to have_http_status(:ok)
-      customer = JSON.parse(response.body)
+      merchant = JSON.parse(response.body)
 
-      expect(customer['first_name']).to eq('Chelsea')
-      expect(customer['last_name']).to eq('May')
+      expect(merchant['name']).to eq('Patagonia')
     end
   end
 end
