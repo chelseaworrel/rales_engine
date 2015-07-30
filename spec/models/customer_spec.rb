@@ -40,7 +40,7 @@ describe Customer, type: :model do
 
   it 'should have transaction(s)' do
     transaction = Transaction.create({invoice_id: invoice.id,
-                                      credit_card_number: "4397199533314394",
+                                      credit_card_number: "4140149827486249",
                                       result: "success",
                                       created_at: "2015-07-29 10:16:08",
                                       updated_at: "2015-07-29 10:16:08"})
