@@ -1,82 +1,67 @@
 require 'rails_helper'
 
-RSpec.describe Item, type: :model do
-  let(:item) { Item.create(name: "bacon", description: "salty", unit_price: 500, merchant_id: merchant.id) }
-  let(:merchant) { Merchant.create(name: "bacon-shop") }
-
-  before(:each) do
-    item
-    merchant
+describe Item, type: :model do
+  let(:customer_attributes) do
+    {first_name: "Horace",
+     last_name: "Williams",
+     created_at: "21015-07-29 10:26:55",
+     updated_at: "21015-07-29 10:26:55"}
   end
 
-  it "is valid" do
-    expect(item).to be_valid
+  let(:merchant_attributes) do
+    {name: "Patigonia",
+     created_at: "21015-07-29 10:26:55",
+     updated_at: "21015-07-29 10:26:55"}
   end
 
-  xit "item belongs to a merchant" do
+  let(:invoice_attributes) do
+    {customer_id: customer.id,
+     merchant_id: merchant.id,
+     status: "shipped",
+     created_at: "21015-07-29 10:26:55",
+     updated_at: "21015-07-29 10:26:55"}
+  end
+
+  let(:item_attributes) do
+    {name: "Shirt",
+     description: "floral print",
+     unit_price: 10,
+     created_at: "21015-07-29 10:26:55",
+     updated_at: "21015-07-29 10:26:55",
+     merchant_id: merchant.id
+    }
+  end
+
+  let(:invoice_item_attributes) do
+    {item_id: item.id,
+     invoice_id: invoice.id,
+     quantity: 5,
+     unit_price: 10,
+     created_at: "21015-07-29 10:26:55",
+     updated_at: "21015-07-29 10:26:55"}
+  end
+
+  let(:invoice)      { Invoice.create(invoice_attributes)  }
+  let(:merchant)     { Merchant.create(merchant_attributes)}
+  let(:item)         { Item.create(item_attributes)        }
+  let(:customer)     { Customer.create(customer_attributes)}
+  let(:invoice_item) { InvoiceItem.create(invoice_item_attributes)}
+
+  it 'responds to invoice items' do
+    expect(item).to respond_to(:invoice_items)
+  end
+
+  it 'responds to merchant' do
     expect(item).to respond_to(:merchant)
   end
-  #
-  # it "is invalid without a title" do
-  #   item.title = nil
-  #
-  #   expect(item).not_to be_valid
-  # end
-  #
-  # it "is invalid if the title is an empty string" do
-  #   item.title = ""
-  #
-  #   expect(item).not_to be_valid
-  # end
-  #
-  # it "is invalid without a description" do
-  #   item.description = nil
-  #
-  #   expect(item).not_to be_valid
-  # end
-  #
-  # it "is invalid if the description is an empty string" do
-  #   item.description = ""
-  #
-  #   expect(item).not_to be_valid
-  # end
-  #
-  # it "is invalid without a price" do
-  #   item.price = nil
-  #   expect(item).not_to be_valid
-  # end
-  #
-  # it "is invalid without a unique title" do
-  #   item
-  #   item2 = Item.create(title: "bacon", description: "so good", price: 300)
-  #
-  #   expect(item2).not_to be_valid
-  # end
-  #
-  # it "is invalid if the price is less than 0" do
-  #   item.price = -100
-  #
-  #   expect(item).not_to be_valid
-  # end
-  #
-  # it "responds with a collection of its categories" do
-  #   expect(item).to respond_to(:categories)
-  # end
-  #
-  # it "responds with a collection of its orders" do
-  #   expect(item).to respond_to(:orders)
-  # end
-  #
-  # it "responds with a collection of its order_items" do
-  #   expect(item).to respond_to(:order_items)
-  # end
-  #
-  # it "can search the items by multiple terms" do
-  #   Item.create(title: 'jerky', description: 'dry meat', price: 4.00)
-  #   Item.create(title: 'berries', description: 'sweet fruit', price: 4.00)
-  #   Item.create(title: 'corn', description: 'yellow and sweet', price: 4.00)
-  #
-  #   expect(Item.search('jerk').map(&:title)).to eq(['jerky'])
-  #   expect(Item.search('sweet').map(&:title)).to eq(['berries', 'corn'])
-  # end
+
+  it 'should have many invoice items' do
+    invoice_item
+    expect(item.invoice_items.include?(invoice_item)).to be(true)
+    expect(item.invoice_items.count).to eq(1)
+  end
+
+  it 'should belong to a merchant' do
+    expect(item.merchant).to eq(merchant)
+  end
 end
