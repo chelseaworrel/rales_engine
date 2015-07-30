@@ -29,7 +29,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def most_revenue
-    render json: find_item.most_revenue
+    respond_with Item.most_revenue(params)
   end
 
   private

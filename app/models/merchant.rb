@@ -8,9 +8,9 @@ class Merchant < ActiveRecord::Base
 
   def revenue(params)
     if params[:date]
-      invoices.successful.where(invoices: {created_at: params[:date]}).joins(:invoice_items).sum('quantity * unit_price') / 100.00
+      revenue_for_date(params)
     else
-      invoices.successful.joins(:invoice_items).sum('quantity * unit_price') / 100.00
+      calculate_revenue
     end
   end
 
@@ -25,7 +25,6 @@ class Merchant < ActiveRecord::Base
 
   def self.most_revenue(params)
      all.max_by(params[:quantity].to_i) { |m| m.calculate_revenue }
-    # all.sort_by { |m| m.revenue_total }.last(params[:quantity].to_i).reverse
   end
 
   def calculate_revenue
@@ -38,6 +37,15 @@ class Merchant < ActiveRecord::Base
 
   def total_items
     invoices.successful.joins(:invoice_items).sum(:quantity)
+  end
+
+  def revenue_for_date(params)
+    invoices.successful.where(invoices: {created_at: params[:date]}).joins(:invoice_items).sum('quantity * unit_price') / 100.00
+  end
+
+  def self.all_revenue(params)
+    all.map { |m| m.revenue_for_date(params) }.reduce(:+)
+    # Invoice.successful.where(invoices: {created_at: params[:date]}).joins(:invoice_items).sum('quantity * unit_price') / 100.00
   end
 
 end

@@ -48,6 +48,10 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Merchant.most_items(params)
   end
 
+  def all_revenue
+    respond_with Merchant.all_revenue(params)
+  end
+
   private
   def find_merchant
     Merchant.find_by(id: params[:merchant_id])

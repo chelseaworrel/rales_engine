@@ -11,6 +11,7 @@ describe Api::V1::CustomersController do
       customer = JSON.parse(response.body)
 
       customer = customer.last
+
       expect(customer['first_name']).to eq('Chelsea')
       expect(customer['last_name']).to eq('May')
     end
